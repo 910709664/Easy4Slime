@@ -8,11 +8,13 @@ public class PlayerControl : MonoBehaviour {
      public float moveSpeed=5f;
      public float runSpeed = 10f;
      public float gravity = 9.8f;
+     public float damping = 20f;
      private Vector3 moveDirection=Vector3.zero;
      private CharacterController playerController;
      private Animator Anim;
-
      private Rigidbody rd;
+
+     public GameObject CameraBall;
 	// Use this for initialization
 	void Start ()
     {
@@ -28,6 +30,7 @@ public class PlayerControl : MonoBehaviour {
         animatorInfo = Anim.GetCurrentAnimatorStateInfo(0);
         if (playerController.isGrounded)
         {
+            
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
             if (h != 0 || v != 0)
@@ -45,9 +48,10 @@ public class PlayerControl : MonoBehaviour {
                 {
                     Anim.SetBool("Run", false);
                 }
-                moveDirection = new Vector3(h, 0, v);
-                transform.LookAt(moveDirection + transform.position);
-                playerController.Move(moveDirection * moveSpeed * Time.deltaTime);
+                //moveDirection = new Vector3(h, 0, v);
+                //transform.LookAt(moveDirection + transform.position);
+                MirDirection(h, v);
+                playerController.Move(moveDirection * moveSpeed*Time.deltaTime);
             }
             else
             {
@@ -82,4 +86,27 @@ public class PlayerControl : MonoBehaviour {
     //        Anim.SetInteger("Atk1",-1);
     //    }
     //}       
+    private void MirDirection(float h, float v)
+    {
+        if (v > 0)
+        {
+            moveDirection = new Vector3(CameraBall.transform.forward.x, 0, CameraBall.transform.forward.z);
+        }
+        if (v < 0)
+        {
+            moveDirection = new Vector3(-CameraBall.transform.forward.x, 0, -CameraBall.transform.forward.z);
+        }
+        if (h > 0)
+        {
+            moveDirection = new Vector3(CameraBall.transform.right.x, 0,  CameraBall.transform.right.z);
+        }
+        if (h < 0)
+        {
+            moveDirection = new Vector3(-CameraBall.transform.right.x, 0, -CameraBall.transform.right.z);
+        }
+        Quaternion roleQuaternion = Quaternion.LookRotation(moveDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, roleQuaternion, damping* Time.deltaTime);
+
+
+    }
 }
