@@ -401,7 +401,7 @@ ModelImporter:
       name: Jump
       takeName: Aki@Jump
       firstFrame: 301
-      lastFrame: 356
+      lastFrame: 345
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

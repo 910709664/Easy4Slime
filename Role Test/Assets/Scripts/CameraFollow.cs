@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour {
 
     public Transform target;
     //最大距离
-    public float distance = 3f;
+    public float distance = 5f;
     //拉近速度
     public float damp = 5f;
     // Start is called before the first frame update
@@ -16,7 +16,7 @@ public class CameraFollow : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {   //相对位置
         Vector3 dirVector3 = transform.position - target.position;
         //在相对位置发射一条射线检测，如果在最大距离检测到地形隔绝则拉近镜头到碰撞点

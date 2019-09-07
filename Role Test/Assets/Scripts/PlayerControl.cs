@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
 
-     public float moveSpeed=5f;
-     public float runSpeed = 10f;
+     public float moveSpeed=7f;
+     public float runSpeed = 12f;
+     public float jumpSpeed = 5f;
      public float gravity = 9.8f;
      public float damping = 20f;
      private Vector3 moveDirection=Vector3.zero;
      private CharacterController playerController;
      private Animator Anim;
-     private Rigidbody rd;
+     
 
      public GameObject CameraBall;
 	// Use this for initialization
@@ -20,7 +21,7 @@ public class PlayerControl : MonoBehaviour {
     {
         playerController = transform.GetComponent<CharacterController>();
         Anim = transform.GetComponent<Animator>();
-        rd = transform.GetComponent<Rigidbody>();
+        
     }
 	
 	// Update is called once per frame
@@ -67,15 +68,27 @@ public class PlayerControl : MonoBehaviour {
                    Anim.SetInteger("Atk1",-1);
             }
 
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    Anim.SetBool("Jump", true);
+            //    moveDirection.y = jumpSpeed;
+            //    playerController.Move(moveDirection * Time.deltaTime);
+            //    Debug.Log("Jumping");
+                
+                                
+            //}
 
+            //if (animatorInfo.normalizedTime >= 1f && animatorInfo.IsName("Jump"))
+            //{
+            //    Anim.SetBool("Jump", false);
+            //}
 
         }
-        else
-        {
+        
             
             moveDirection.y -= gravity * Time.deltaTime;
             playerController.Move(moveDirection * Time.deltaTime);
-        }
+        
     }
 
     //private void Attack(AnimatorStateInfo animatorInfo)
@@ -98,14 +111,14 @@ public class PlayerControl : MonoBehaviour {
         }
         if (h > 0)
         {
-            moveDirection = new Vector3(CameraBall.transform.right.x, 0,  CameraBall.transform.right.z);
+            moveDirection = new Vector3(CameraBall.transform.right.x, 0, CameraBall.transform.right.z);
         }
         if (h < 0)
         {
             moveDirection = new Vector3(-CameraBall.transform.right.x, 0, -CameraBall.transform.right.z);
         }
         Quaternion roleQuaternion = Quaternion.LookRotation(moveDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, roleQuaternion, damping* Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, roleQuaternion, damping * Time.deltaTime);
 
 
     }
